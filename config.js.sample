@@ -1,0 +1,8 @@
+// TickTick OAuth App Credentials
+// 1. Go to https://developer.ticktick.com/manage
+// 2. Create an app with redirect URI: https://<your-extension-id>.chromiumapp.org/
+// 3. Paste your credentials below
+// 4. Rename this file to config.js
+
+const CLIENT_ID = "YOUR_CLIENT_ID_HERE";
+const CLIENT_SECRET = "YOUR_CLIENT_SECRET_HERE";

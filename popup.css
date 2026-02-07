@@ -1,0 +1,113 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 320px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+  color: #333;
+  padding: 16px;
+}
+
+.view {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.view[hidden] {
+  display: none;
+}
+
+.header {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #4772fa;
+  color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #3a5fd9;
+}
+
+select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 13px;
+  background: #fff;
+}
+
+.preview {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  align-items: baseline;
+}
+
+.label {
+  font-weight: 600;
+  color: #666;
+  white-space: nowrap;
+}
+
+.value {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.value.url {
+  color: #4772fa;
+  font-size: 11px;
+}
+
+.link {
+  text-align: center;
+  font-size: 11px;
+  color: #888;
+}
+
+.feedback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  border-radius: 8px;
+}
+
+.feedback[hidden] {
+  display: none;
+}
+
+.feedback.success {
+  background: #e6f9e6;
+  color: #2a7d2a;
+}
+
+.feedback.error {
+  background: #fde8e8;
+  color: #c0392b;
+}
