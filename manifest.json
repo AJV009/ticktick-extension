@@ -3,10 +3,11 @@
   "name": "TickTick Page Saver",
   "version": "1.0",
   "description": "Save the current tab as a TickTick task with one click.",
-  "permissions": ["identity", "activeTab", "storage"],
+  "permissions": ["identity", "activeTab", "storage", "contextMenus"],
   "host_permissions": [
     "https://ticktick.com/*",
-    "https://api.ticktick.com/*"
+    "https://api.ticktick.com/*",
+    "<all_urls>"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -19,6 +20,14 @@
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
