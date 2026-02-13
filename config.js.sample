@@ -1,6 +1,10 @@
 // TickTick OAuth App Credentials
 // 1. Go to https://developer.ticktick.com/manage
-// 2. Create an app with redirect URI: https://<your-extension-id>.chromiumapp.org/
+// 2. Create an app and add redirect URIs for each browser you use:
+//    Chrome:  https://<your-extension-id>.chromiumapp.org/
+//    Firefox: https://<your-gecko-id>.extensions.allizom.org/
+//    (Tip: load the extension, open the background console, and run
+//     chrome.identity.getRedirectURL() to see the exact redirect URI.)
 // 3. Paste your credentials below
 // 4. Rename this file to config.js
 
