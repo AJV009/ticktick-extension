@@ -74,6 +74,46 @@ async function resolveUrl(url) {
   }
 }
 
+// --- Toast Notification ---
+
+function showToast(tabId, message, isError = false) {
+  chrome.scripting.executeScript({
+    target: { tabId },
+    func: (msg, err) => {
+      const existing = document.getElementById("ticktick-toast");
+      if (existing) existing.remove();
+
+      const toast = document.createElement("div");
+      toast.id = "ticktick-toast";
+      toast.textContent = msg;
+      Object.assign(toast.style, {
+        position: "fixed",
+        bottom: "24px",
+        right: "24px",
+        zIndex: "2147483647",
+        padding: "10px 18px",
+        borderRadius: "8px",
+        fontSize: "14px",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        color: "#fff",
+        background: err ? "#d32f2f" : "#388e3c",
+        boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+        opacity: "0",
+        transition: "opacity 0.3s ease",
+        pointerEvents: "none",
+      });
+
+      document.body.appendChild(toast);
+      requestAnimationFrame(() => { toast.style.opacity = "1"; });
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    },
+    args: [message, isError],
+  }).catch(() => {});
+}
+
 // --- Context Menu Click Handler ---
 
 chrome.contextMenus.onClicked.addListener(async (info, tab) => {
@@ -121,9 +161,13 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
     });
     if (!res.ok) {
       console.error("TickTick API error:", res.status, await res.text());
+      showToast(tab.id, "Failed to add task", true);
+    } else {
+      showToast(tab.id, "Task added to TickTick!");
     }
   } catch (err) {
     console.error("Failed to create task:", err);
+    showToast(tab.id, "Failed to add task", true);
   }
 });
 

@@ -3,7 +3,7 @@
   "name": "TickTick Page Saver",
   "version": "1.0",
   "description": "Save the current tab as a TickTick task with one click.",
-  "permissions": ["identity", "activeTab", "storage", "contextMenus"],
+  "permissions": ["identity", "activeTab", "storage", "contextMenus", "scripting"],
   "host_permissions": [
     "https://ticktick.com/*",
     "https://api.ticktick.com/*",
