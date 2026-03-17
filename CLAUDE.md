@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What This Is
 
-Cross-browser extension (Manifest V3, Chrome + Firefox 120+) that saves the current browser tab as a TickTick task. Task title = page title, task content = page URL, posted to a user-selected TickTick project.
+Cross-browser extension (Manifest V3, Chrome + Firefox 121+) that saves the current browser tab as a TickTick task. Task title = page title, task content = page URL, posted to a user-selected TickTick project.
 
 ## Development
 
@@ -23,7 +23,7 @@ Run `chrome.identity.getRedirectURL()` in the extension's background console to 
 ## Architecture
 
 **Two execution contexts** that do NOT share scope:
-- **`background.js`** — Manifest V3 service worker. Handles OAuth flow (auth code exchange → token). Loads config via `importScripts("config.js")`.
+- **`background.js`** — Manifest V3 service worker (Chrome) / event page (Firefox). Handles OAuth flow (auth code exchange → token). On Chrome, loads config via `importScripts("config.js")`; on Firefox, `config.js` is loaded via the manifest `scripts` array.
 - **`popup.js`** + **`popup.html`** — Popup UI. Loads config via `<script src="config.js">`. Manages three view states (login → project picker → add task), makes TickTick API calls.
 
 Communication between them: popup sends `chrome.runtime.sendMessage({action: "authenticate"})`, background responds with `{success: true}` or `{error: "..."}`.
@@ -39,9 +39,9 @@ Communication between them: popup sends `chrome.runtime.sendMessage({action: "au
 The extension uses `chrome.*` APIs throughout. Firefox provides a compatibility layer that maps `chrome.*` calls to its native `browser.*` APIs, so no polyfill or conditional code is needed. Key points:
 
 - **Manifest**: `browser_specific_settings.gecko` is ignored by Chrome and required by Firefox for a stable extension ID.
-- **`service_worker` in background**: Supported by Chrome (all MV3) and Firefox 120+. This is why `strict_min_version` is set to `120.0`.
+- **Background execution model**: Chrome uses `service_worker`; Firefox does **not** support service workers for extensions and uses `scripts` (event pages) instead. The manifest includes both keys — each browser reads the one it supports and ignores the other. Requires Chrome 121+ and Firefox 121+ for both keys to coexist without errors.
 - **`chrome.identity.getRedirectURL()`**: Returns different URLs per browser (`*.chromiumapp.org` on Chrome, `*.extensions.allizom.org` on Firefox). Both must be registered in the TickTick developer app.
-- **`importScripts("config.js")`**: Standard ServiceWorker API, works identically on both browsers.
+- **`importScripts("config.js")`**: Only available in service workers (Chrome). On Firefox, `config.js` is loaded via the manifest `scripts` array. The call is guarded with `typeof importScripts === "function"`.
 
 ## Gotchas
 
