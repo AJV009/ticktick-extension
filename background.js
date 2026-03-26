@@ -1,4 +1,8 @@
-importScripts("config.js");
+// Service worker (Chrome) needs importScripts; event page (Firefox) loads
+// config.js via the manifest "scripts" array, so importScripts isn't available.
+if (typeof importScripts === "function") {
+  importScripts("config.js");
+}
 
 const API_BASE = "https://api.ticktick.com/open/v1";
 const MENU_ID = "send-to-ticktick";
